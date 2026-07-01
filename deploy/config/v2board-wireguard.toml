@@ -1,0 +1,27 @@
+[panel]
+base_url = "https://panel.example.com"
+token = "replace-with-v2board-server-token"
+node_id = 1
+node_type = "wireguard"
+timeout_secs = 10
+
+[wireguard]
+interface = "wg0"
+# fwmark = 51820
+# Peers with a last handshake older than this window are not counted online.
+# Defaults to max(push_interval * 3, 180).
+# online_handshake_window_secs = 180
+
+[state]
+path = "/var/lib/v2board-wireguard/state.sqlite3"
+
+[firewall]
+enabled = true
+backend = "nftables"
+# Set this when the host has multiple uplinks and NAT must be pinned.
+# outbound_interface = "eth0"
+dry_run = false
+
+[rate_limit]
+enabled = true
+dry_run = false

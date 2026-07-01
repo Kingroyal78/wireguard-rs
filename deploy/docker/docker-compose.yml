@@ -1,0 +1,20 @@
+services:
+  v2board-wireguard:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ../config/v2board-wireguard.toml:/etc/v2board-wireguard/config.toml:ro
+      - v2board-wireguard-state:/var/lib/v2board-wireguard
+      - /lib/modules:/lib/modules:ro
+    environment:
+      RUST_LOG: info
+    command: ["--config", "/etc/v2board-wireguard/config.toml"]
+    restart: unless-stopped
+
+volumes:
+  v2board-wireguard-state:

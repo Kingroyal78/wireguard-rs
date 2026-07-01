@@ -3,6 +3,7 @@ name = "defguard_wireguard_rs"
 version = "0.10.0"
 edition = "2024"
 rust-version = "1.87"
+autobins = false
 description = "A unified multi-platform high-level API for managing WireGuard interfaces"
 license = "Apache-2.0"
 readme = "README.md"
@@ -12,10 +13,18 @@ keywords = ["wireguard", "network", "vpn"]
 categories = ["network-programming"]
 
 [dependencies]
+anyhow = { version = "1.0", optional = true }
 base64 = "0.22"
+clap = { version = "4.5", features = ["derive", "env"], optional = true }
 log = "0.4"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"], optional = true }
+rusqlite = { version = "0.32", features = ["bundled"], optional = true }
 serde = { version = "1.0", features = ["derive"], optional = true }
+serde_json = { version = "1.0", optional = true }
 thiserror = "2.0"
+toml = { version = "0.8", optional = true }
+tracing = { version = "0.1", optional = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"], optional = true }
 x25519-dalek = { version = "2.0", features = ["getrandom", "static_secrets"] }
 
 [dev-dependencies]
@@ -55,6 +64,22 @@ regex = "1.12"
 default = ["serde"]
 check_dependencies = []
 serde = ["dep:serde"]
+v2board-daemon = [
+    "serde",
+    "dep:anyhow",
+    "dep:clap",
+    "dep:reqwest",
+    "dep:rusqlite",
+    "dep:serde_json",
+    "dep:toml",
+    "dep:tracing",
+    "dep:tracing-subscriber",
+]
+
+[[bin]]
+name = "v2board-wireguard"
+path = "src/bin/v2board-wireguard.rs"
+required-features = ["v2board-daemon"]
 
 [profile.release]
 codegen-units = 1

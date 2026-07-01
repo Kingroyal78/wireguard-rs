@@ -1,0 +1,24 @@
+[Unit]
+Description=v2board WireGuard backend
+Documentation=https://github.com/DefGuard/wireguard-rs
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/v2board-wireguard --config /etc/v2board-wireguard/config.toml
+Restart=always
+RestartSec=5
+DynamicUser=no
+User=root
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/v2board-wireguard
+ReadOnlyPaths=/etc/v2board-wireguard
+Environment=RUST_LOG=info
+
+[Install]
+WantedBy=multi-user.target
